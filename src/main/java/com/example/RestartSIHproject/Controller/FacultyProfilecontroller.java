@@ -5,11 +5,9 @@ import com.example.RestartSIHproject.Model.FacultyProfileModel;
 
 import com.example.RestartSIHproject.Repository.FacultyProfileRepo;
 import com.example.RestartSIHproject.Repository.StudentAttendenceRepo;
-import com.example.RestartSIHproject.Service.FacultyProfileService;
-import com.example.RestartSIHproject.Service.LectureService;
-import com.example.RestartSIHproject.Service.StudentAttendenceService;
-import com.example.RestartSIHproject.Service.partA_0Service;
+import com.example.RestartSIHproject.Service.*;
 import com.example.RestartSIHproject.Utility.Lectures;
+import com.example.RestartSIHproject.Utility.Result;
 import com.example.RestartSIHproject.Utility.StudentAttendence;
 import com.example.RestartSIHproject.Utility.partA_0;
 import org.bson.types.ObjectId;
@@ -30,6 +28,8 @@ public class FacultyProfilecontroller {
     private partA_0Service partA_0Service;
     @Autowired
     private StudentAttendenceService studentAttendenceService;
+    @Autowired
+    private ResultService resultService;
 
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
@@ -72,6 +72,14 @@ public class FacultyProfilecontroller {
     public ResponseEntity<?> DeleteStuAtt(@PathVariable ObjectId id,@PathVariable String username){
         return studentAttendenceService.DeleteStudentAttendence(id,username);
 
+    }
+    @PostMapping("addresult/{username}")
+    public ResponseEntity<?> addResult(@RequestBody Result result ,@PathVariable String username){
+        return resultService.addResult(result,username);
+    }
+    @DeleteMapping("deleteresult/{id}/{username}")
+    public ResponseEntity<?> DeleteResult(@PathVariable ObjectId id,@PathVariable String username){
+        return resultService.deleteResult(id,username);
     }
 
 

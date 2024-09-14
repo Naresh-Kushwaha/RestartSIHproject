@@ -2,6 +2,7 @@ package com.example.RestartSIHproject.Model;
 
 
 import com.example.RestartSIHproject.Utility.Lectures;
+import com.example.RestartSIHproject.Utility.Result;
 import com.example.RestartSIHproject.Utility.StudentAttendence;
 import com.example.RestartSIHproject.Utility.partA_0;
 import com.mongodb.lang.NonNull;
@@ -36,9 +37,19 @@ public class FacultyProfileModel {
     private partA_0 PartA_0;
     @DBRef
     private ArrayList<Lectures>PerformanceOfEngagingLectures=new ArrayList<>();
-
     @DBRef
     private ArrayList<StudentAttendence>PerformanceOfStudentAttendence=new ArrayList<>();
+    @DBRef
+    private ArrayList<Result>PerformanceOfResult=new ArrayList<>();
+
+    public ArrayList<Result> getPerformanceOfResult() {
+        return PerformanceOfResult;
+    }
+
+    public void setPerformanceOfResult(ArrayList<Result> performanceOfResult) {
+        PerformanceOfResult = performanceOfResult;
+    }
+
     public partA_0 getPartA_0() {
         return PartA_0;
     }
