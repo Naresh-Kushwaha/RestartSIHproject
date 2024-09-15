@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class partA_0Service {
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
 
+    @Transactional
     public ResponseEntity<?>AddPartA_0(partA_0 partA0 ,String username){
         Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
         if(facultyProfileModel.isPresent()){
@@ -36,6 +38,7 @@ public class partA_0Service {
 
 
     }
+    @Transactional
     public  ResponseEntity<?>DeletePartA_0(ObjectId id,String username){
         Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
         if(facultyProfileModel.isPresent()){

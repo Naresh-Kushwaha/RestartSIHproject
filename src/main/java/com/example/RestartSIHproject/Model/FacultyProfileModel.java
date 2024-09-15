@@ -25,7 +25,8 @@ public class FacultyProfileModel {
     private String username;
     private String password;
     private String email;
-    private Boolean verified;
+    private int otp;
+    private Boolean verified=false;
     private String institution;
     private String googleScholarId;
     private String staffType;
@@ -105,6 +106,14 @@ public class FacultyProfileModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
     }
 
     public Boolean getVerified() {

@@ -4,12 +4,12 @@ package com.example.RestartSIHproject.Controller;
 import com.example.RestartSIHproject.Model.FacultyProfileModel;
 
 import com.example.RestartSIHproject.Repository.FacultyProfileRepo;
-import com.example.RestartSIHproject.Repository.StudentAttendenceRepo;
 import com.example.RestartSIHproject.Service.*;
 import com.example.RestartSIHproject.Utility.Lectures;
 import com.example.RestartSIHproject.Utility.Result;
 import com.example.RestartSIHproject.Utility.StudentAttendence;
 import com.example.RestartSIHproject.Utility.partA_0;
+import jakarta.mail.MessagingException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,8 @@ public class FacultyProfilecontroller {
     private StudentAttendenceService studentAttendenceService;
     @Autowired
     private ResultService resultService;
-
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
     @PostMapping("/create")
@@ -81,6 +82,17 @@ public class FacultyProfilecontroller {
     public ResponseEntity<?> DeleteResult(@PathVariable ObjectId id,@PathVariable String username){
         return resultService.deleteResult(id,username);
     }
+    @PostMapping("/generateotp/{username}")
+    public ResponseEntity<?> sendOtp(@RequestParam String email, @PathVariable String username) throws MessagingException {
+
+        return  emailService.sendEmail(email,username);
+    }
+    @PostMapping("/verifyotp/{username}")
+    public ResponseEntity<?> sendOtp(@RequestParam int otp, @PathVariable String username) throws MessagingException {
+
+        return  emailService.verifyEmail(otp,username);
+    }
+
 
 
 }

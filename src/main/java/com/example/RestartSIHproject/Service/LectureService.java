@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.objenesis.ObjenesisException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -21,6 +22,7 @@ public class LectureService {
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
 
+    @Transactional
     public ResponseEntity<?> AddLecture(Lectures lectures,String username){
         Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
         if(facultyProfileModel.isPresent()){
@@ -48,6 +50,7 @@ public class LectureService {
            return null;
         }
     }
+    @Transactional
     public ResponseEntity<?> DeleteLecture(ObjectId id, String username){
         Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
         if (facultyProfileModel.isPresent()){
