@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -42,6 +43,10 @@ public class FacultyProfilecontroller {
     @GetMapping("getFaculty/{username}")
     public ResponseEntity<FacultyProfileModel> getFaculty(@PathVariable String username){
         return ResponseEntity.status(200).body(facultyProfileService.getFaculty(username));
+    }
+    @GetMapping("getallFaculty")
+    public ResponseEntity<List<FacultyProfileModel>> getAllFaculty(){
+        return ResponseEntity.status(200).body(facultyProfileService.getAllFaculty());
     }
     @PutMapping("/update/{username}")
     public  ResponseEntity<?> UpdateProfile(@RequestBody FacultyProfileModel facultyProfileModel,@PathVariable String username){
