@@ -22,10 +22,13 @@ public class EmailService {
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
 
+    private FacultyProfileModel getFacultyProfileByUsername(String username){
+        return facultyProfileRepo.findByUsername(username).orElseThrow(()->new IllegalArgumentException("faculty not found"));
+    }
+
     public ResponseEntity<?> sendEmail(String toEmail, String username) throws MessagingException {
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile= facultyProfileModel.get();
+
+        FacultyProfileModel facultyProfile=getFacultyProfileByUsername(username);
             facultyProfile.setEmail(toEmail);
             Random random=new Random();
             int otp=1000+ random.nextInt(10000);
@@ -48,17 +51,12 @@ public class EmailService {
         helper.setText(htmlContent,true);
         javaMailSender.send(message);
         return ResponseEntity.ok().build();
-        }
-        else{
-            return ResponseEntity.notFound().build();
 
-        }
     }
     public ResponseEntity<?> verifyEmail(int otp, String username) throws MessagingException {
-        Optional<FacultyProfileModel> facultyProfileModel = facultyProfileRepo.findByUsername(username);
-        if (facultyProfileModel.isPresent()) {
-            FacultyProfileModel facultyProfile = facultyProfileModel.get();
-            if (facultyProfile.getOtp() == otp) {
+;
+FacultyProfileModel facultyProfile=getFacultyProfileByUsername(username);
+    if (facultyProfile.getOtp() == otp) {
                 facultyProfile.setVerified(true);
                 facultyProfileRepo.save(facultyProfile);
                 return ResponseEntity.ok().build();
@@ -66,10 +64,5 @@ public class EmailService {
             } else {
                return ResponseEntity.status(422).body("Invalid OTP");
             }
-        }
-        else {
-            return ResponseEntity.notFound().build();
 
-        }
-    }
-}
+}}

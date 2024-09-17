@@ -20,11 +20,13 @@ public class ResultService {
     @Autowired
     private ResultRepo resultRepo;
 
+    private FacultyProfileModel getaFacultyProfileByUsername(String username){
+        return facultyProfileRepo.findByUsername(username).orElseThrow(()->new IllegalArgumentException("faculty not found"));
+    }
     @Transactional
     public ResponseEntity<?> addResult(Result result,String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile= facultyProfileModel.get();
+         FacultyProfileModel facultyProfile=getaFacultyProfileByUsername(username);
+
             Result result1= resultRepo.save(result);
 
 
@@ -33,24 +35,14 @@ public class ResultService {
             return ResponseEntity.ok().build();
 
 
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
     }
     @Transactional
     public ResponseEntity<?> deleteResult(ObjectId id,String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile= facultyProfileModel.get();
+      FacultyProfileModel facultyProfile=getaFacultyProfileByUsername(username);
             facultyProfile.getPerformanceOfResult().removeIf(x->x.getId().equals(id));
 
             resultRepo.deleteById(id);
             return ResponseEntity.ok().build();
 
-        }
-        else{
-            return ResponseEntity.notFound().build();
-        }
     }
 }

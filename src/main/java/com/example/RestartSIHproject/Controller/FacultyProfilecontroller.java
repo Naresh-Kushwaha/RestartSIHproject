@@ -39,6 +39,10 @@ public class FacultyProfilecontroller {
 
         return  facultyProfileService.createProfile(facultyProfileModel);
     }
+    @GetMapping("getFaculty/{username}")
+    public ResponseEntity<FacultyProfileModel> getFaculty(@PathVariable String username){
+        return ResponseEntity.status(200).body(facultyProfileService.getFaculty(username));
+    }
     @PutMapping("/update/{username}")
     public  ResponseEntity<?> UpdateProfile(@RequestBody FacultyProfileModel facultyProfileModel,@PathVariable String username){
         return  facultyProfileService.updateProfile(facultyProfileModel,username);

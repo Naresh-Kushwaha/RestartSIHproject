@@ -18,6 +18,10 @@ public class FacultyProfileService {
     public ResponseEntity<?> createProfile(FacultyProfileModel facultyProfileModel){
        return ResponseEntity.status(200).body(facultyProfileRepo.save(facultyProfileModel));
     }
+    public FacultyProfileModel getFaculty(String username){
+        FacultyProfileModel facultyProfile=facultyProfileRepo.findByUsername(username).get();
+        return facultyProfile;
+    }
 
 
     public ResponseEntity<?>updateProfile(FacultyProfileModel facultyProfileModel,String username){

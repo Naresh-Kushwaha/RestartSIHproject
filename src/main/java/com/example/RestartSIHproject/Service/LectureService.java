@@ -22,48 +22,35 @@ public class LectureService {
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
 
+    private FacultyProfileModel getaFacultyProfileByUsername(String username){
+        return facultyProfileRepo.findByUsername(username).orElseThrow(()->new IllegalArgumentException("faculty not found"));
+    }
     @Transactional
     public ResponseEntity<?> AddLecture(Lectures lectures,String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile=facultyProfileModel.get();
-            lectures.setTargetAchieved(lectures.getPeriodEngaged()/ lectures.getPeriodsAllotted());
+             FacultyProfileModel facultyProfile=getaFacultyProfileByUsername(username);
+        lectures.setTargetAchieved(lectures.getPeriodEngaged()/ lectures.getPeriodsAllotted());
             Lectures lectures1=lecturesRepo.save(lectures);
             facultyProfile.getPerformanceOfEngagingLectures().add(lectures);
             facultyProfileRepo.save(facultyProfile);
             return  ResponseEntity.ok().body(facultyProfile.getPerformanceOfEngagingLectures());
 
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-
-
     }
-    public ArrayList<Lectures> getAllLecture(String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            return facultyProfileModel.get().getPerformanceOfEngagingLectures();
+    public ResponseEntity<ArrayList<Lectures>> getAllLecture(String username){
 
-        }
-        else {
-           return null;
-        }
+        FacultyProfileModel facultyProfile=getaFacultyProfileByUsername(username);
+        return ResponseEntity.ok(facultyProfile.getPerformanceOfEngagingLectures());
+
     }
     @Transactional
     public ResponseEntity<?> DeleteLecture(ObjectId id, String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if (facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfie= facultyProfileModel.get();
+        FacultyProfileModel facultyProfie=getaFacultyProfileByUsername(username);
             lecturesRepo.deleteById(id);
             facultyProfie.getPerformanceOfEngagingLectures().removeIf(x->x.getId().equals(id));
             facultyProfileRepo.save(facultyProfie);
             return ResponseEntity.noContent().build();
 
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+
+
     }
 
 }

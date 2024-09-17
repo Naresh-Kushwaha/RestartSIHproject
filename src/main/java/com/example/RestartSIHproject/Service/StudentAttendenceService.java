@@ -22,39 +22,28 @@ public class StudentAttendenceService {
     @Autowired
     private StudentAttendenceRepo studentAttendenceRepo;
 
+    private FacultyProfileModel getFacultyProfileByUsername(String username){
+        return facultyProfileRepo.findByUsername(username).orElseThrow(()->new IllegalArgumentException("faculty not found"));
+    }
     @Transactional
     public ResponseEntity<?>AddStudentAttendence( StudentAttendence studentAttendence,String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile= facultyProfileModel.get();
+    FacultyProfileModel facultyProfile =getFacultyProfileByUsername(username);
             studentAttendenceRepo.save(studentAttendence);
-            studentAttendence.setAverageAttendence( (studentAttendence.getStudentPresent() * 100) /(studentAttendence.getLectureEngaged()*studentAttendence.getStudentRoll()));
+            studentAttendence.setAverageAttendence( (float) (studentAttendence.getStudentPresent() * 100) /(studentAttendence.getLectureEngaged()*studentAttendence.getStudentRoll()));
             facultyProfile.getPerformanceOfStudentAttendence().add(studentAttendence);
             studentAttendenceRepo.save(studentAttendence);
             facultyProfileRepo.save(facultyProfile);
             return ResponseEntity.ok().build();
 
-
-        }
-        else{
-            return ResponseEntity.notFound().build();
-        }
     }
     @Transactional
     public ResponseEntity<?>DeleteStudentAttendence(ObjectId id, String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile= facultyProfileModel.get();
+        FacultyProfileModel facultyProfile =getFacultyProfileByUsername(username);
             studentAttendenceRepo.deleteById(id);
             facultyProfile.getPerformanceOfStudentAttendence().removeIf(x->x.getId().equals(id));
             facultyProfileRepo.save(facultyProfile);
             return ResponseEntity.ok().build();
 
-
-        }
-        else{
-            return ResponseEntity.notFound().build();
-        }
     }
 
 }

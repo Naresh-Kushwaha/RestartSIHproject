@@ -19,38 +19,32 @@ public class partA_0Service {
     private partA_0Repo partA_0Repo;
     @Autowired
     private FacultyProfileRepo facultyProfileRepo;
+    private FacultyProfileModel getaFacultyProfileByUsername(String username){
+        return facultyProfileRepo.findByUsername(username).orElseThrow(()->new IllegalArgumentException("faculty not found"));
+    }
 
     @Transactional
     public ResponseEntity<?>AddPartA_0(partA_0 partA0 ,String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfile=facultyProfileModel.get();
+     FacultyProfileModel facultyProfile=getaFacultyProfileByUsername(username);
+
             partA_0 partA01=partA_0Repo.save(partA0);
 
             facultyProfile.setPartA_0(partA01);
             facultyProfileRepo.save(facultyProfile);
             return  ResponseEntity.ok().build();
 
-        }
-        else{
-            return ResponseEntity.notFound().build();
-        }
+
 
 
     }
     @Transactional
     public  ResponseEntity<?>DeletePartA_0(ObjectId id,String username){
-        Optional<FacultyProfileModel> facultyProfileModel=facultyProfileRepo.findByUsername(username);
-        if(facultyProfileModel.isPresent()){
-            FacultyProfileModel facultyProfil= facultyProfileModel.get();
+        FacultyProfileModel facultyProfil =getaFacultyProfileByUsername(username);
             facultyProfil.getPerformanceOfEngagingLectures().removeIf(x->x.getId().equals(id));
             facultyProfileRepo.save(facultyProfil);
             partA_0Repo.deleteById(id);
             return ResponseEntity.noContent().build();
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
+
     }
 
 }
