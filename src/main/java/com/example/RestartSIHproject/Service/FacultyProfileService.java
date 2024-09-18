@@ -38,6 +38,7 @@ public class FacultyProfileService {
             facultyProfile.setBranch(facultyProfileModel.getBranch());
             facultyProfile.setCourse(facultyProfileModel.getCourse());
             facultyProfile.setDesignationType(facultyProfile.getDesignationType());
+            facultyProfileRepo.save(facultyProfile);
             return ResponseEntity.ok("Faculty Data Updated");
         }
         else {

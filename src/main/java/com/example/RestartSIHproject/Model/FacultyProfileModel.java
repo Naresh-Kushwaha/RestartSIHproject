@@ -47,6 +47,7 @@ public class FacultyProfileModel {
         return PerformanceOfResult;
     }
 
+
     public void setPerformanceOfResult(ArrayList<Result> performanceOfResult) {
         PerformanceOfResult = performanceOfResult;
     }
