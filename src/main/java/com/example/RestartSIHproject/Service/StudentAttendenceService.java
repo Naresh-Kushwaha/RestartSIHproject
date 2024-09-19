@@ -33,7 +33,7 @@ public class StudentAttendenceService {
             facultyProfile.getPerformanceOfStudentAttendence().add(studentAttendence);
             studentAttendenceRepo.save(studentAttendence);
             facultyProfileRepo.save(facultyProfile);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(facultyProfile);
 
     }
     @Transactional

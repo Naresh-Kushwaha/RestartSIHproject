@@ -101,6 +101,10 @@ public class FacultyProfilecontroller {
 
         return  emailService.verifyEmail(otp,username);
     }
+    @PostMapping("/setimage/{username}")
+    public ResponseEntity<?> setImage(@RequestParam String image,@PathVariable String username){
+        return facultyProfileService.setImage(image,username);
+    }
 
 
 

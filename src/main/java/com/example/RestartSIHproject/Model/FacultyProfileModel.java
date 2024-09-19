@@ -34,6 +34,8 @@ public class FacultyProfileModel {
     private String branch;
     private String course;
     private String designationType;
+    private String image;
+
     @DBRef
     private partA_0 PartA_0;
     @DBRef
@@ -181,5 +183,11 @@ public class FacultyProfileModel {
         this.designationType = designationType;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

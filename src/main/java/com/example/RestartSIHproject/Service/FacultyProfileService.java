@@ -17,12 +17,26 @@ public class FacultyProfileService {
     private partA_0Repo  partA_0Repo;
     @Autowired
     private LecturesRepo lecturesRepo;
+
     public ResponseEntity<?> createProfile(FacultyProfileModel facultyProfileModel){
        return ResponseEntity.status(200).body(facultyProfileRepo.save(facultyProfileModel));
     }
     public FacultyProfileModel getFaculty(String username){
         FacultyProfileModel facultyProfile=facultyProfileRepo.findByUsername(username).get();
         return facultyProfile;
+    }
+    public ResponseEntity<?>setImage(String image,String usename){
+        Optional<FacultyProfileModel> faculty=facultyProfileRepo.findByUsername(usename);
+        if(faculty.isPresent()){
+            FacultyProfileModel facultyProfile= faculty.get();
+            facultyProfile.setImage(image);
+            facultyProfileRepo.save(facultyProfile);
+            return  ResponseEntity.ok().build();
+        }
+        else {
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+        }
+
     }
 
 
@@ -37,7 +51,7 @@ public class FacultyProfileService {
             facultyProfile.setProgram(facultyProfileModel.getProgram());
             facultyProfile.setBranch(facultyProfileModel.getBranch());
             facultyProfile.setCourse(facultyProfileModel.getCourse());
-            facultyProfile.setDesignationType(facultyProfile.getDesignationType());
+            facultyProfile.setDesignationType(facultyProfileModel.getDesignationType());
             facultyProfileRepo.save(facultyProfile);
             return ResponseEntity.ok("Faculty Data Updated");
         }
